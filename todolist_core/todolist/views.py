@@ -8,6 +8,9 @@ from django.views.decorators.cache import cache_page
 from rest_framework.generics import ListAPIView
 from .models import Tag
 from .serializers import TagSerializer
+from django.http import JsonResponse
+from .tasks import add
+from todolist.tasks import replace_bad_words_in_comment
 
 
 def base(request):
@@ -29,6 +32,14 @@ class CommentRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView)
     serializer_class = CommentSerializer
 
 
+class CommentCreateAPIView(generics.CreateAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+
+    def perform_create(self):
+        self.text = replace_bad_words_in_comment(self.text)
+
+
 class TagViewSet(viewsets.ModelViewSet):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
@@ -38,3 +49,8 @@ class TagViewSet(viewsets.ModelViewSet):
 class TagListView(ListAPIView):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
+
+
+def add_view(request):
+    result = add.delay(4, 4)
+    return JsonResponse({'task_id': result.id})
