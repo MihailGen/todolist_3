@@ -12,9 +12,9 @@ class TaskAdmin(admin.ModelAdmin):
     search_fields = ('name', 'description')
     list_filter = ('due_date', 'author')
 
-
     inlines = [
         CommentInline,
     ]
+
 
 admin.site.register(Tag)
