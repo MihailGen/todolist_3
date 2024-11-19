@@ -15,7 +15,7 @@ class CommentSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class TaskSerializer(serializers.ModelSerializer): #класс сериализер до кэширования
+class TaskSerializer(serializers.ModelSerializer):  # класс сериализер до кэширования
     comments = CommentSerializer(many=True, read_only=True)
 
     class Meta:
