@@ -1,19 +1,18 @@
+# celery.py
+from __future__ import absolute_import, unicode_literals
 import os
-
 from celery import Celery
 
-# Set the default Django settings module for the 'celery' program.
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'proj.settings')
+# Устанавливаем переменную окружения для настроек Django
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'todolist_core.settings')
 
-app = Celery('proj')
+# Создаем экземпляр Celery
+app = Celery('todolist_core')
 
-# Using a string here means the worker doesn't have to serialize
-# the configuration object to child processes.
-# - namespace='CELERY' means all celery-related configuration keys
-#   should have a `CELERY_` prefix.
+# Загружаем настройки из файла Django
 app.config_from_object('django.conf:settings', namespace='CELERY')
 
-# Load task modules from all registered Django apps.
+# Автоматически обнаруживаем задачи в приложениях Django
 app.autodiscover_tasks()
 
 
