@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Task, Comment, Tag
+from .models import Task, Comment, Tag, Category
 from .utils import get_cached_tags
 
 
@@ -24,6 +24,13 @@ class TaskSerializer(serializers.ModelSerializer):  # класс сериали�
 
     def get_comments_count(self, obj):
         return obj.comments.count()
+
+
+class CategorySerializer(serializers.ModelSerializer):  # класс сериализер до кэширования
+
+    class Meta:
+        model = Category
+        fields = ['name', 'color']
 
 
 '''class TaskSerializer(serializers.ModelSerializer):  #класс сериализер c кэшированием

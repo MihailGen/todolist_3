@@ -7,10 +7,11 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from rest_framework.generics import ListAPIView
 from .models import Tag
+from .models import Category
 from .serializers import TagSerializer
 from django.http import JsonResponse
 from .tasks import add
-from todolist.tasks import replace_bad_words_in_comment
+from .tasks import replace_bad_words_in_comment
 
 
 def base(request):
@@ -19,6 +20,11 @@ def base(request):
 
 class TodolistViewSet(viewsets.ModelViewSet):
     queryset = Task.objects.all()
+    serializer_class = TaskSerializer
+
+
+class CategoryViewSet(viewsets.ModelViewSet):
+    queryset = Category.objects.all()
     serializer_class = TaskSerializer
 
 

@@ -1,6 +1,7 @@
 from rest_framework.routers import DefaultRouter
 from django.urls import path
-from .views import TodolistViewSet, CommentListCreateAPIView, CommentRetrieveUpdateDestroyAPIView, TagViewSet
+from .views import TodolistViewSet, CommentListCreateAPIView, CommentRetrieveUpdateDestroyAPIView, TagViewSet, \
+    CategoryViewSet
 
 app_name = 'tasks'
 
@@ -11,5 +12,7 @@ router.register(r'tags', TagViewSet)
 urlpatterns = [
                   path('comments/', CommentListCreateAPIView.as_view()),
                   path('comments/<int:pk>/', CommentRetrieveUpdateDestroyAPIView.as_view()),
+                  path('category/', CategoryViewSet.as_view()),
+                  path('comments/<int:pk>/', CategoryViewSet.as_view()),
 
               ] + router.urls
