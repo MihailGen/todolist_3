@@ -13,20 +13,22 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 from datetime import timedelta
 from celery.schedules import crontab
-from decouple import config
+#from decouple import config
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = config('BASE_DIR', default='Path(__file__).resolve().parent.parent')
+BASE_DIR = 'Path(__file__).resolve().parent.parent'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY', default='your_default_secret_key')
+#SECRET_KEY = config('SECRET_KEY', default='your_default_secret_key')
+SECRET_KEY = 'django-insecure-l9z48&en!)%49z=(h&qituk7$*t%ide3d%jmw0+*tdyix_6kvb'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', default=False, cast=bool)
+#DEBUG = config('DEBUG', default=False, cast=bool)
+DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -81,8 +83,10 @@ WSGI_APPLICATION = 'todolist_core.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': os.getenv('DB_ENGINE'),
-        'NAME': os.getenv('DB_NAME'),
+        # 'ENGINE': os.getenv('DB_ENGINE'),
+        'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': os.getenv('DB_NAME'),
+        'NAME': BASE_DIR + 'db.sqlite3',
     }
 }
 
@@ -147,7 +151,8 @@ SIMPLE_JWT = {
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': os.getenv('REDIS_URL'),
+        #'LOCATION': os.getenv('REDIS_URL'),
+        'LOCATION': 'redis://127.0.0.1:6379/1',
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
         }

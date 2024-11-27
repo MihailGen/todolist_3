@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework import viewsets
 from rest_framework import generics, mixins
 from .models import Task, Comment, Tag
-from .serializers import TaskSerializer, CommentSerializer, TagSerializer
+from .serializers import TaskSerializer, CommentSerializer, TagSerializer, CategorySerializer
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from rest_framework.generics import ListAPIView
@@ -23,9 +23,18 @@ class TodolistViewSet(viewsets.ModelViewSet):
     serializer_class = TaskSerializer
 
 
+class CategoryListCreateAPIView(generics.ListCreateAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+
+class CategoryRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+
+
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
-    serializer_class = TaskSerializer
+    serializer_class = TagSerializer
 
 
 class CommentListCreateAPIView(generics.ListCreateAPIView):

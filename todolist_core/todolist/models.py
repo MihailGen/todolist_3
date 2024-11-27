@@ -19,7 +19,7 @@ class Task(models.Model):
     due_date = models.DateTimeField(null=True, blank=True, verbose_name='Cроки выполнения')
     author = models.CharField(max_length=50, null=True, blank=True, verbose_name='Автор')
     tags = models.ManyToManyField('Tag', related_name='tasks')
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='категории')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='category', null=True, blank=True)
 
     class Meta:
         verbose_name = 'задача'

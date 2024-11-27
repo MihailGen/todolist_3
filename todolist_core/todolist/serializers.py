@@ -18,15 +18,18 @@ class CommentSerializer(serializers.ModelSerializer):
 class TaskSerializer(serializers.ModelSerializer):  # класс сериализер до кэширования
     comments = CommentSerializer(many=True, read_only=True)
 
+    # category = CategorySerializer(many=True, read_only=False, default=1)
+
     class Meta:
         model = Task
-        fields = ['name', 'description', 'due_date', 'comments']
+        fields = ['name', 'description', 'due_date', 'comments', 'category']
 
     def get_comments_count(self, obj):
         return obj.comments.count()
 
 
 class CategorySerializer(serializers.ModelSerializer):  # класс сериализер до кэширования
+    tasks = TaskSerializer(many=True, read_only=False, default=1)
 
     class Meta:
         model = Category
