@@ -1,5 +1,5 @@
 from django.contrib.auth.hashers import make_password
-from django.contrib.auth.models import AbstractUser, UserManager
+from django.contrib.auth.models import AbstractUser, UserManager, PermissionsMixin
 
 from django.db import models
 
@@ -7,7 +7,7 @@ from django.db import models
 class CustomUserManager(UserManager):
     use_in_migrations = True
 
-    def _create_user(self, email, password, **extra_fields):
+    def _create_user(self, email, password, phone, **extra_fields):
         if not email:
             raise ValueError("The given email must be set")
         email = self.normalize_email(email)
@@ -16,7 +16,7 @@ class CustomUserManager(UserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email=None, password=None, **extra_fields):
+    def create_superuser(self, email=None, password=None, phone=None, **extra_fields):
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
 
@@ -26,12 +26,13 @@ class CustomUserManager(UserManager):
         if extra_fields.get("is_superuser") is not True:
             raise ValueError("Superuser must have is_superuser=True.")
 
-        return self._create_user(email, password, **extra_fields)
+        return self._create_user(email, password, phone, **extra_fields)
 
 
-class User(AbstractUser):
+class User(AbstractUser, PermissionsMixin):
     username = None
     email = models.EmailField(verbose_name='email', max_length=255, unique=True)
+    phone = models.CharField(max_length=12, unique=True, null=True, blank=True)
     REQUIRED_FIELDS = []
     USERNAME_FIELD = 'email'
 
@@ -40,3 +41,6 @@ class User(AbstractUser):
     class Meta:
         verbose_name = 'пользователь'
         verbose_name_plural = 'пользователи'
+
+    def __str__(self):
+        return self.email

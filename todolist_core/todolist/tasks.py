@@ -11,9 +11,11 @@ def add(x, y):
 
 @shared_task
 def replace_bad_words_in_comment(comment):
+    print(comment)
     for p in ['продать', 'крипта', 'ставки']:
         if p in comment:
             comment = comment.replace(p, '###')
+    print(comment)
     return comment
 
 
