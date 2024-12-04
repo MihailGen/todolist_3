@@ -1,12 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+<link rel="stylesheet" type="text/css"  href="style.css">
 </head>
-<h1>Привет!</h1>
-<p>Это моя страничка!</p>
-<body>
+<h1>Task List</h1>
 
-</body>
-</html>
+<ul>
+{% for task in tasks %}
+    <li>{{ task.name }}</li>
+    <ul>{{ task.description }}</ul>
+    <ul>{{ task.due_date }}</ul>
+{% endfor %}
+</ul>

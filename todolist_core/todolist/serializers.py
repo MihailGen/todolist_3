@@ -15,10 +15,6 @@ class CommentSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-
-
-
-
 '''
 class TaskSerializer(serializers.ModelSerializer):  # класс сериализер до кэширования
     comments = CommentSerializer(many=True, read_only=True)
@@ -31,15 +27,9 @@ class TaskSerializer(serializers.ModelSerializer):  # класс сериали�
         return obj.comments.count()
 '''
 
-class CategorySerializer(serializers.ModelSerializer):  # класс сериализер до кэширования
-    # tasks = TaskSerializer(many=True, read_only=False, default=1)
-
-    class Meta:
-        model = Category
-        fields = ['id', 'name', 'color']
 
 
-class TaskSerializer(serializers.ModelSerializer):  #класс сериализер c кэшированием
+class TaskSerializer(serializers.ModelSerializer):
     tags = serializers.SerializerMethodField()
 
     class Meta:
@@ -49,3 +39,11 @@ class TaskSerializer(serializers.ModelSerializer):  #класс сериализ
     def get_tags(self, obj):
         tags = get_cached_tags(obj.id)
         return [tag.name for tag in tags]
+
+
+class CategorySerializer(serializers.ModelSerializer):  # класс сериализер до кэширования
+    #tasks = TaskSerializer(many=True, read_only=False, default=1)
+
+    class Meta:
+        model = Category
+        fields = ['id', 'name', 'color']

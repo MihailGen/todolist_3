@@ -4,22 +4,21 @@ from todolist.models import Task
 from datetime import datetime, timedelta, date
 
 
-@shared_task
-def add(x, y):
-    return x + y
-
-
+# Функция удаления из комментария запрещённых слов
 @shared_task
 def replace_bad_words_in_comment(comment):
-    print(comment)
+    comment_is_changed = False
     for p in ['продать', 'крипта', 'ставки']:
-        if p in comment:
-            comment = comment.replace(p, '###')
-    print(comment)
-    return comment
+        if p in comment.text:
+            comment.text = comment.text.replace(p, '###')
+            comment_is_changed = True
+    print(comment.text)  # отладка
+    if comment_is_changed:
+        comment.save()
 
 
 @shared_task
 def change_deadtime():
     for tdt in Task.objects.filter(due_date__lt=datetime.date.today()):
-        tdt.due_date = date.today() + timedelta(days=1)
+        #tdt.due_date = date.today() + timedelta(days=1)
+        print(tdt.name)
