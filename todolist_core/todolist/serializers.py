@@ -28,13 +28,13 @@ class TaskSerializer(serializers.ModelSerializer):  # класс сериали�
 '''
 
 
-
 class TaskSerializer(serializers.ModelSerializer):
     tags = serializers.SerializerMethodField()
 
     class Meta:
         model = Task
-        fields = ['id', 'name', 'description', 'tags']
+        #fields = ['id', 'name', 'description', 'tags']
+        fields = '__all__'
 
     def get_tags(self, obj):
         tags = get_cached_tags(obj.id)
@@ -42,7 +42,7 @@ class TaskSerializer(serializers.ModelSerializer):
 
 
 class CategorySerializer(serializers.ModelSerializer):  # класс сериализер до кэширования
-    #tasks = TaskSerializer(many=True, read_only=False, default=1)
+    tasks = TaskSerializer(many=True, read_only=False, default=1)
 
     class Meta:
         model = Category

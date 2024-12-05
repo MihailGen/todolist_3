@@ -11,6 +11,8 @@ def replace_bad_words_in_comment(comment):
     for p in ['продать', 'крипта', 'ставки']:
         if p in comment.text:
             comment.text = comment.text.replace(p, '###')
+            print(comment.text)
+            #comment.text.replace(p, '###')
             comment_is_changed = True
     print(comment.text)  # отладка
     if comment_is_changed:

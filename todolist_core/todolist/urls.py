@@ -7,7 +7,7 @@ from .views import TodolistViewSet,  TagListView, \
 app_name = 'tasks'
 
 router = DefaultRouter()
-router.register(r'tasks', TodolistViewSet)
+router.register(r'tasks', TodolistViewSet,  basename='tasks')
 router.register(r'category', CategoryViewSet)
 
 urlpatterns = [
