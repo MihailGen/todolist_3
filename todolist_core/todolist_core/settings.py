@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 import os
 from datetime import timedelta
 from pathlib import Path
+from decouple import config
+
 from celery.schedules import crontab
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -23,10 +25,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('SECRET_KEY', default='your_default_secret_key')
-# SECRET_KEY = 'django-insecure-l9z48&en!)%49z=(h&qituk7$*t%ide3d%jmw0+*tdyix_6kvb'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = []
 
@@ -69,13 +70,11 @@ WSGI_APPLICATION = 'todolist_core.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DB_NAME'),
-        #'USER': os.getenv('DB_USER'),
-        'USER': 'postgres',
-        #'PASSWORD': os.getenv('DB_PASSWORD'),
-        'PASSWORD': '2d5864a2',
-        'HOST': os.getenv('DB_HOST', default='localhost'),
-        'PORT': os.getenv('DB_PORT'),
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST': config('DB_HOST', default='localhost'),
+        'PORT': config('DB_PORT', default=5432, cast=int),
     }
 }
 
@@ -131,9 +130,8 @@ SIMPLE_JWT = {'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5), 'REFRESH_TOKEN_LIFE
               'AUTH_HEADER_TYPES': ('Bearer',), }
 
 CACHES = {'default': {'BACKEND': 'django_redis.cache.RedisCache',
-                      'LOCATION': os.getenv('LOCATION'),
-                      # 'LOCATION': 'redis://127.0.0.1:6379/1',
-                      'OPTIONS': {'CLIENT_CLASS': 'django_redis.client.DefaultClient', }}}
+                    'LOCATION': config('REDIS_LOCATION'),
+                    'OPTIONS': {'CLIENT_CLASS': 'django_redis.client.DefaultClient', }}}
 
 # URL подключения к Redis
 CELERY_BROKER_URL = 'redis://localhost:6379/0'
