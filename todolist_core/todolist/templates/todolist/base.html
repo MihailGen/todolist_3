@@ -1,8 +1,13 @@
+<!DOCTYPE html>
+<html lang="ru">
 <head>
-<link rel="stylesheet" type="text/css"  href="style.css">
+<meta charset="UTF-8">
+    {% load static %}
+    <link rel="stylesheet"  href="{%static 'style.css'%}" type="text/css">
+    <title>Базовая страница проекта Todolist</title>
 </head>
+<body>
 <h1>Task List</h1>
-
 <ul>
 {% for task in tasks %}
     <li>{{ task.name }}</li>
@@ -10,3 +15,4 @@
     <ul>{{ task.due_date }}</ul>
 {% endfor %}
 </ul>
+</body>

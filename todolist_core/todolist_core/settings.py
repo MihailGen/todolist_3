@@ -10,11 +10,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
-from pathlib import Path
-from datetime import timedelta
-from celery.schedules import crontab
 # from decouple import config
 import os
+from datetime import timedelta
+from pathlib import Path
+
+from celery.schedules import crontab
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -32,20 +33,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-# Application definition
 
-INSTALLED_APPS = ['django.contrib.admin',
-                  'django.contrib.auth',
-                  'django.contrib.contenttypes',
-                  'django.contrib.sessions',
-                  'django.contrib.messages',
-                  'django.contrib.staticfiles',
-                  'rest_framework',
-                  'todolist',
-                  'drf_yasg',
-                  'users',
-                  'rest_framework_simplejwt',
-                  'django_extensions', ]
+# Application definition
+INSTALLED_APPS = ['django.contrib.admin', 'django.contrib.auth', 'django.contrib.contenttypes',
+                  'django.contrib.sessions', 'django.contrib.messages', 'django.contrib.staticfiles', 'rest_framework',
+                  'todolist', 'drf_yasg', 'users', 'rest_framework_simplejwt', 'django_extensions', ]
 
 MIDDLEWARE = ['django.middleware.security.SecurityMiddleware', 'django.contrib.sessions.middleware.SessionMiddleware',
               'django.middleware.common.CommonMiddleware', 'django.middleware.csrf.CsrfViewMiddleware',
@@ -55,15 +47,10 @@ MIDDLEWARE = ['django.middleware.security.SecurityMiddleware', 'django.contrib.s
 
 ROOT_URLCONF = 'todolist_core.urls'
 
-TEMPLATES = [{'BACKEND': 'django.template.backends.django.DjangoTemplates',
-              'DIRS': [],
-              'APP_DIRS': True,
-              'OPTIONS': {
-    'context_processors': ['django.template.context_processors.debug',
-                           'django.template.context_processors.request',
+TEMPLATES = [{'BACKEND': 'django.template.backends.django.DjangoTemplates', 'DIRS': [], 'APP_DIRS': True, 'OPTIONS': {
+    'context_processors': ['django.template.context_processors.debug', 'django.template.context_processors.request',
                            'django.contrib.auth.context_processors.auth',
-                           'django.contrib.messages.context_processors.messages', ],
-              }, }, ]
+                           'django.contrib.messages.context_processors.messages', ], }, }, ]
 
 WSGI_APPLICATION = 'todolist_core.wsgi.application'
 
@@ -95,8 +82,9 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
-
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static"), ]
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -138,6 +126,6 @@ CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'UTC'
 
 CELERY_BEAT_SCHEDULE = {
-    'add-every-day': {'task': 'myapp.tasks.change_deadtime()',
-                      'schedule': crontab(hour=23, minute=59), # Каждый день в 23:59
+    'add-every-day': {'task': 'myapp.tasks.change_deadtime()', 'schedule': crontab(hour=23, minute=59),
+                      # Каждый день в 23:59
                       }, }
