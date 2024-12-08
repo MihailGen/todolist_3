@@ -10,11 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
-# from decouple import config
 import os
 from datetime import timedelta
 from pathlib import Path
-
 from celery.schedules import crontab
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -24,42 +22,62 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = config('SECRET_KEY', default='your_default_secret_key')
-SECRET_KEY = 'django-insecure-l9z48&en!)%49z=(h&qituk7$*t%ide3d%jmw0+*tdyix_6kvb'
+SECRET_KEY = os.getenv('SECRET_KEY', default='your_default_secret_key')
+# SECRET_KEY = 'django-insecure-l9z48&en!)%49z=(h&qituk7$*t%ide3d%jmw0+*tdyix_6kvb'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = config('DEBUG', default=False, cast=bool)
 DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
-INSTALLED_APPS = ['django.contrib.admin', 'django.contrib.auth', 'django.contrib.contenttypes',
-                  'django.contrib.sessions', 'django.contrib.messages', 'django.contrib.staticfiles', 'rest_framework',
-                  'todolist', 'drf_yasg', 'users', 'rest_framework_simplejwt', 'django_extensions', ]
+INSTALLED_APPS = ['django.contrib.admin',
+                  'django.contrib.auth',
+                  'django.contrib.contenttypes',
+                  'django.contrib.sessions',
+                  'django.contrib.messages',
+                  'django.contrib.staticfiles',
+                  'rest_framework',
+                  'todolist',
+                  'drf_yasg',
+                  'users',
+                  'rest_framework_simplejwt',
+                  'django_extensions', ]
 
-MIDDLEWARE = ['django.middleware.security.SecurityMiddleware', 'django.contrib.sessions.middleware.SessionMiddleware',
-              'django.middleware.common.CommonMiddleware', 'django.middleware.csrf.CsrfViewMiddleware',
+MIDDLEWARE = ['django.middleware.security.SecurityMiddleware',
+              'django.contrib.sessions.middleware.SessionMiddleware',
+              'django.middleware.common.CommonMiddleware',
+              'django.middleware.csrf.CsrfViewMiddleware',
               'django.contrib.auth.middleware.AuthenticationMiddleware',
               'django.contrib.messages.middleware.MessageMiddleware',
               'django.middleware.clickjacking.XFrameOptionsMiddleware', ]
 
 ROOT_URLCONF = 'todolist_core.urls'
 
-TEMPLATES = [{'BACKEND': 'django.template.backends.django.DjangoTemplates', 'DIRS': [], 'APP_DIRS': True, 'OPTIONS': {
-    'context_processors': ['django.template.context_processors.debug', 'django.template.context_processors.request',
-                           'django.contrib.auth.context_processors.auth',
-                           'django.contrib.messages.context_processors.messages', ], }, }, ]
+TEMPLATES = [{'BACKEND': 'django.template.backends.django.DjangoTemplates',
+              'DIRS': [], 'APP_DIRS': True, 'OPTIONS': {
+        'context_processors': ['django.template.context_processors.debug',
+                               'django.template.context_processors.request',
+                               'django.contrib.auth.context_processors.auth',
+                               'django.contrib.messages.context_processors.messages', ], }, }, ]
 
 WSGI_APPLICATION = 'todolist_core.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {'default': {  # 'ENGINE': os.getenv('DB_ENGINE'),
-    'ENGINE': 'django.db.backends.sqlite3',  # 'NAME': os.getenv('DB_NAME'),
-    'NAME': BASE_DIR / 'db.sqlite3', }}
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('DB_NAME'),
+        #'USER': os.getenv('DB_USER'),
+        'USER': 'postgres',
+        #'PASSWORD': os.getenv('DB_PASSWORD'),
+        'PASSWORD': '2d5864a2',
+        'HOST': os.getenv('DB_HOST', default='localhost'),
+        'PORT': os.getenv('DB_PORT'),
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -85,7 +103,6 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static"), ]
 
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
@@ -98,7 +115,8 @@ REST_FRAMEWORK = {'DEFAULT_AUTHENTICATION_CLASSES': ['rest_framework.authenticat
                   'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.IsAuthenticated', ],
                   'DEFAULT_RENDERER_CLASSES': ['rest_framework.renderers.JSONRenderer',
                                                'rest_framework.renderers.BrowsableAPIRenderer', ],
-                  'DEFAULT_PARSER_CLASSES': ['rest_framework.parsers.JSONParser', 'rest_framework.parsers.FormParser',
+                  'DEFAULT_PARSER_CLASSES': ['rest_framework.parsers.JSONParser',
+                                             'rest_framework.parsers.FormParser',
                                              'rest_framework.parsers.MultiPartParser', ],
                   'TEST_REQUEST_RENDERER_CLASSES': ['rest_framework.renderers.MultiPartRenderer',
                                                     'rest_framework.renderers.JSONRenderer',
@@ -106,11 +124,15 @@ REST_FRAMEWORK = {'DEFAULT_AUTHENTICATION_CLASSES': ['rest_framework.authenticat
                   'TEST_REQUEST_DEFAULT_FORMAT': 'json', }
 
 SIMPLE_JWT = {'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5), 'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
-              'ROTATE_REFRESH_TOKENS': False, 'BLACKLIST_AFTER_ROTATION': True, 'ALGORITHM': 'HS256',
-              'SIGNING_KEY': SECRET_KEY, 'VERIFYING_KEY': None, 'AUTH_HEADER_TYPES': ('Bearer',), }
+              'ROTATE_REFRESH_TOKENS': False,
+              'BLACKLIST_AFTER_ROTATION': True, 'ALGORITHM': 'HS256',
+              'SIGNING_KEY': SECRET_KEY,
+              'VERIFYING_KEY': None,
+              'AUTH_HEADER_TYPES': ('Bearer',), }
 
-CACHES = {'default': {'BACKEND': 'django_redis.cache.RedisCache',  # 'LOCATION': os.getenv('REDIS_URL'),
-                      'LOCATION': 'redis://127.0.0.1:6379/1',
+CACHES = {'default': {'BACKEND': 'django_redis.cache.RedisCache',
+                      'LOCATION': os.getenv('LOCATION'),
+                      # 'LOCATION': 'redis://127.0.0.1:6379/1',
                       'OPTIONS': {'CLIENT_CLASS': 'django_redis.client.DefaultClient', }}}
 
 # URL подключения к Redis
