@@ -34,80 +34,53 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
-INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'rest_framework',
-    'todolist',
-    'drf_yasg',
-    'users',
-    'rest_framework_simplejwt',
-    'django_extensions',
-]
+INSTALLED_APPS = ['django.contrib.admin',
+                  'django.contrib.auth',
+                  'django.contrib.contenttypes',
+                  'django.contrib.sessions',
+                  'django.contrib.messages',
+                  'django.contrib.staticfiles',
+                  'rest_framework',
+                  'todolist',
+                  'drf_yasg',
+                  'users',
+                  'rest_framework_simplejwt',
+                  'django_extensions', ]
 
-MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-]
+MIDDLEWARE = ['django.middleware.security.SecurityMiddleware', 'django.contrib.sessions.middleware.SessionMiddleware',
+              'django.middleware.common.CommonMiddleware', 'django.middleware.csrf.CsrfViewMiddleware',
+              'django.contrib.auth.middleware.AuthenticationMiddleware',
+              'django.contrib.messages.middleware.MessageMiddleware',
+              'django.middleware.clickjacking.XFrameOptionsMiddleware', ]
 
 ROOT_URLCONF = 'todolist_core.urls'
 
-TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-            ],
-        },
-    },
-]
+TEMPLATES = [{'BACKEND': 'django.template.backends.django.DjangoTemplates',
+              'DIRS': [],
+              'APP_DIRS': True,
+              'OPTIONS': {
+    'context_processors': ['django.template.context_processors.debug',
+                           'django.template.context_processors.request',
+                           'django.contrib.auth.context_processors.auth',
+                           'django.contrib.messages.context_processors.messages', ],
+              }, }, ]
 
 WSGI_APPLICATION = 'todolist_core.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        # 'ENGINE': os.getenv('DB_ENGINE'),
-        'ENGINE': 'django.db.backends.sqlite3',
-        # 'NAME': os.getenv('DB_NAME'),
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+DATABASES = {'default': {  # 'ENGINE': os.getenv('DB_ENGINE'),
+    'ENGINE': 'django.db.backends.sqlite3',  # 'NAME': os.getenv('DB_NAME'),
+    'NAME': BASE_DIR / 'db.sqlite3', }}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
-AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
-]
+AUTH_PASSWORD_VALIDATORS = [{'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator', },
+                            {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator', },
+                            {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator', },
+                            {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator', }, ]
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
@@ -132,52 +105,25 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'users.User'
 
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-    ],
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
-    ],
-    'DEFAULT_RENDERER_CLASSES': [
-        'rest_framework.renderers.JSONRenderer',
-        'rest_framework.renderers.BrowsableAPIRenderer',
-    ],
-    'DEFAULT_PARSER_CLASSES': [
-        'rest_framework.parsers.JSONParser',
-        'rest_framework.parsers.FormParser',
-        'rest_framework.parsers.MultiPartParser',
-    ],
-    'TEST_REQUEST_RENDERER_CLASSES': [
-        'rest_framework.renderers.MultiPartRenderer',
-        'rest_framework.renderers.JSONRenderer',
-        'rest_framework.renderers.TemplateHTMLRenderer'
-    ],
-    'TEST_REQUEST_DEFAULT_FORMAT': 'json',
-}
+REST_FRAMEWORK = {'DEFAULT_AUTHENTICATION_CLASSES': ['rest_framework.authentication.BasicAuthentication',
+                                                     'rest_framework.authentication.SessionAuthentication', ],
+                  'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.IsAuthenticated', ],
+                  'DEFAULT_RENDERER_CLASSES': ['rest_framework.renderers.JSONRenderer',
+                                               'rest_framework.renderers.BrowsableAPIRenderer', ],
+                  'DEFAULT_PARSER_CLASSES': ['rest_framework.parsers.JSONParser', 'rest_framework.parsers.FormParser',
+                                             'rest_framework.parsers.MultiPartParser', ],
+                  'TEST_REQUEST_RENDERER_CLASSES': ['rest_framework.renderers.MultiPartRenderer',
+                                                    'rest_framework.renderers.JSONRenderer',
+                                                    'rest_framework.renderers.TemplateHTMLRenderer'],
+                  'TEST_REQUEST_DEFAULT_FORMAT': 'json', }
 
-SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
-    'ROTATE_REFRESH_TOKENS': False,
-    'BLACKLIST_AFTER_ROTATION': True,
-    'ALGORITHM': 'HS256',
-    'SIGNING_KEY': SECRET_KEY,
-    'VERIFYING_KEY': None,
-    'AUTH_HEADER_TYPES': ('Bearer',),
-}
+SIMPLE_JWT = {'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5), 'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+              'ROTATE_REFRESH_TOKENS': False, 'BLACKLIST_AFTER_ROTATION': True, 'ALGORITHM': 'HS256',
+              'SIGNING_KEY': SECRET_KEY, 'VERIFYING_KEY': None, 'AUTH_HEADER_TYPES': ('Bearer',), }
 
-CACHES = {
-    'default': {
-        'BACKEND': 'django_redis.cache.RedisCache',
-        # 'LOCATION': os.getenv('REDIS_URL'),
-        'LOCATION': 'redis://127.0.0.1:6379/1',
-        'OPTIONS': {
-            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
-        }
-    }
-}
+CACHES = {'default': {'BACKEND': 'django_redis.cache.RedisCache',  # 'LOCATION': os.getenv('REDIS_URL'),
+                      'LOCATION': 'redis://127.0.0.1:6379/1',
+                      'OPTIONS': {'CLIENT_CLASS': 'django_redis.client.DefaultClient', }}}
 
 # URL подключения к Redis
 CELERY_BROKER_URL = 'redis://localhost:6379/0'
@@ -192,8 +138,6 @@ CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'UTC'
 
 CELERY_BEAT_SCHEDULE = {
-    'add-every-day': {
-        'task': 'myapp.tasks.change_deadtime()',
-        'schedule': crontab(hour=23, minute=59),  # Каждый день в 23:59
-    },
-}
+    'add-every-day': {'task': 'myapp.tasks.change_deadtime()',
+                      'schedule': crontab(hour=23, minute=59), # Каждый день в 23:59
+                      }, }

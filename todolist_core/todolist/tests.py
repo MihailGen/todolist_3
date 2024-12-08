@@ -1,24 +1,17 @@
-import json
-
 from django.contrib.auth import get_user_model
-from django.middleware.csrf import get_token
-
-from django.contrib.auth.models import AbstractUser
-from django.db import models
+from django.test import TestCase
 from django.urls import reverse
 from rest_framework import status
-from rest_framework.test import APITestCase
-from django.test import TestCase
 from .models import Task, Comment, Tag
-from django.contrib.auth.models import User
 
 
 class TaskTests(TestCase):
     def setUp(self):
         self.task = Task.objects.create(name="Test Task", description="Test Description")
         self.tag = Tag.objects.create(name="Test Tag")
-        #self.user = User.objects.create_user(username='testuser', password='testpass')
-        self.client.login(username='testuser', password='testpass')
+        User = get_user_model()
+        self.user = User.objects.create_superuser(password='testuser', email="user@inbox.ru")
+        self.client.login(password='testuser', email="user@inbox.ru")
 
     def test_view_task(self):  # Тест на просмотр задачи. Работает!
         task = Task.objects.get(id=self.task.id)
@@ -47,8 +40,7 @@ class TaskTests(TestCase):
         self.task.refresh_from_db()
         self.assertIn(self.tag, self.task.tags.all())
 
-
-    def test_create_task(self):
+    def test_create_task(self):  # Тест на создание задачи. Работает!
         url = reverse('tasks:tasks-list')  # есть эндпоинт с именем 'tasks-list'
         print(url)
         data = dict(name='New Task', description='New Description', author="Mihail")

@@ -17,12 +17,7 @@ class TaskAdmin(admin.ModelAdmin):
     search_fields = ('id', 'name', 'description', 'category')
     list_filter = ('id', 'due_date', 'author', 'category')
 
-    inlines = [
-        CommentInline,
-    ]
-
-
-#admin.site.register(Tag)
+    inlines = [CommentInline, ]
 
 
 @admin.register(Category)
@@ -37,6 +32,7 @@ class CommentAdmin(admin.ModelAdmin):
     list_display = ('task', 'text', 'created_at')
     search_fields = ('task', 'text', 'created_at')
     list_filter = ('task', 'text', 'created_at')
+
 
 @admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):

@@ -43,7 +43,7 @@ class CommentCreateView(generics.CreateAPIView):  # БЫЛ viewsets.ModelViewSet
 
     def perform_create(self, serializer_class):
         instance = serializer_class.save()
-        #replace_bad_words_in_comment.delay(instance)
+        # replace_bad_words_in_comment.delay(instance)
         replace_bad_words_in_comment(instance)
 
 
